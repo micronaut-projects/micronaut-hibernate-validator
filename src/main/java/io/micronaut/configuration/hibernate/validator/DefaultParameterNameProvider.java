@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License. 
  */
-package org.particleframework.configuration.hibernate.validator;
+package io.micronaut.configuration.hibernate.validator;
 
-import org.particleframework.context.BeanContext;
-import org.particleframework.core.type.Argument;
-import org.particleframework.core.util.CollectionUtils;
-import org.particleframework.inject.BeanDefinition;
-import org.particleframework.inject.ExecutableMethod;
+import io.micronaut.context.BeanContext;
+import io.micronaut.inject.BeanDefinition;
+import io.micronaut.inject.ExecutableMethod;
+import io.micronaut.context.BeanContext;
+import io.micronaut.core.type.Argument;
+import io.micronaut.core.util.CollectionUtils;
+import io.micronaut.inject.BeanDefinition;
+import io.micronaut.inject.ExecutableMethod;
 
 import javax.inject.Singleton;
 import javax.validation.ParameterNameProvider;

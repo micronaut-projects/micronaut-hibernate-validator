@@ -1,11 +1,15 @@
-package org.particleframework.configuration.hibernate.validator
+package io.micronaut.configuration.hibernate.validator
 
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.annotation.Value
+import io.micronaut.context.exceptions.BeanInstantiationException
 import org.hibernate.validator.constraints.NotBlank
 import org.hibernate.validator.constraints.URL
-import org.particleframework.context.ApplicationContext
-import org.particleframework.context.DefaultApplicationContext
-import org.particleframework.context.annotation.Value
-import org.particleframework.context.exceptions.BeanInstantiationException
+import io.micronaut.context.ApplicationContext
+import io.micronaut.context.DefaultApplicationContext
+import io.micronaut.context.annotation.Value
+import io.micronaut.context.exceptions.BeanInstantiationException
 import spock.lang.Specification
 
 import javax.inject.Singleton
@@ -28,9 +32,9 @@ class ValidatedBeanSpec extends Specification {
         then:
         def e = thrown(BeanInstantiationException)
         e.message == '''\
-Error instantiating bean of type  [org.particleframework.configuration.hibernate.validator.ValidatedBeanSpec$A]
+Error instantiating bean of type  [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 
-Message: Validation failed for bean definition [org.particleframework.configuration.hibernate.validator.ValidatedBeanSpec$A]
+Message: Validation failed for bean definition [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 List of constraint violations:[
 \turl - must be a valid URL
 ]
