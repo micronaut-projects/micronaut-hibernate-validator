@@ -1,14 +1,36 @@
+plugins {
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'groovy'
+}
+
+group 'io.micronaut.configuration'
+version projectVersion
+
+repositories {
+    jcenter()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "io.micronaut:micronaut-bom:$micronautVersion"
+    }
+}
+
 dependencies {
-    compileOnly project(":inject-java")
-    compileOnly project(":graal")
-    compile project(":inject")
-    compile project(":validation")
+    annotationProcessor 'io.micronaut:micronaut-inject-java'
+    compileOnly 'io.micronaut:micronaut-graal'
+    compileOnly 'io.micronaut:micronaut-router'
+    compile 'io.micronaut:micronaut-inject'
+    compile 'io.micronaut:micronaut-validation'
     compile 'org.hibernate:hibernate-validator:6.0.13.Final'
     compileOnly 'org.glassfish.web:el-impl:2.2.1-b05'
-    compileOnly project(":router")
 
     runtime 'org.glassfish:javax.el:3.0.1-b08'
-    testCompile project(":inject-groovy")
-    testCompile project(":inject-java")
+    
+    testCompile 'io.micronaut:micronaut-inject-groovy'
+    testCompile 'io.micronaut:micronaut-inject-java'
+    testCompile("org.spockframework:spock-core:$spockVersion") {
+        exclude module: 'groovy-all'
+    }
 }
-//compileTestGroovy.groovyOptions.forkOptions.jvmArgs = ['-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005']
