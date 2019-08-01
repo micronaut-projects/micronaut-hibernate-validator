@@ -1,0 +1,5 @@
+The `micronaut-hibernate-validator` module includes support for validating Micronaut beans with Hibernate Validator.
+
+A `javax.validation.ValidatorFactory` bean will be created using Hibernate Validator that is capable of validating `javax.validation` annotations on Micronaut beans.
+
+See the section on https://docs.micronaut.io/1.2.x/guide/index.html#beanValidation[Bean Validation] in the documentation for how to declare bean validation rules.
