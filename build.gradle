@@ -93,7 +93,8 @@ subprojects { Project subproject ->
         annotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
         testAnnotationProcessor platform("io.micronaut:micronaut-bom:$micronautVersion")
         implementation platform("io.micronaut:micronaut-bom:$micronautVersion")
-
+        testImplementation platform("io.micronaut:micronaut-bom:$micronautVersion")
+        
         documentation "org.codehaus.groovy:groovy-templates:$groovyVersion"
         documentation "org.codehaus.groovy:groovy-dateutil:$groovyVersion"
 
