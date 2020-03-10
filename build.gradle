@@ -24,15 +24,12 @@ repositories {
 
 version project.projectVersion
 
-
 ext {
     distInstallDir = file("$buildDir/dist-tmp")
     homeBinDir = file("bin")
     homeLibDir = file("lib")
     homeSrcDir = file("src")
 }
-
-
 
 subprojects { Project subproject ->
 
@@ -42,7 +39,6 @@ subprojects { Project subproject ->
         isConfiguration = subproject.projectDir.parentFile.name == 'configurations'
         isBuildSnapshot = version.toString().endsWith("-SNAPSHOT")
     }
-
 
     repositories {
         maven { url "https://repo.grails.org/grails/core" }
@@ -55,8 +51,7 @@ subprojects { Project subproject ->
     sourceCompatibility = '1.8'
     targetCompatibility = '1.8'
     apply from: "https://raw.githubusercontent.com/micronaut-projects/micronaut-build/v${micronautBuildVersion}/publishing.gradle"
-
-
+    
     jar {
         manifest {
             attributes('Automatic-Module-Name': "${subproject.group}.${subproject.name}".replaceAll('[^\\w\\.\\$_]', "_"))
