@@ -21,6 +21,7 @@ import io.micronaut.context.annotation.Value
 import io.micronaut.context.exceptions.BeanInstantiationException
 import org.hibernate.validator.constraints.URL
 import spock.lang.Specification
+import spock.util.environment.RestoreSystemProperties
 
 import javax.inject.Singleton
 
@@ -76,6 +77,7 @@ List of constraint violations:[
 '''
     }
 
+    @RestoreSystemProperties
     void "test validated bean invalid bean custom validator that isnt a bean"() {
 
         given:
