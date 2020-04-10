@@ -28,6 +28,7 @@
 <body class="body" id="docs" onload="addJsClass();" onhashchange="highlightMenu()">
 
 <div id="table-of-content-nav-link" class="desktop">
+    <a id="theme-switcher" title="Switch to dark theme" href="javascript:switchTheme(true)"><i class="fa fa-moon-o"></i></a>
     <a title="Collapse/Open Table of contents" title="Hide Table of Contents" href="javascript:hideTableOfContents();" class="button">[ + ]</a>
 </div>
 
@@ -38,14 +39,15 @@
         </div>
         <div class="navLinks">
             <ul>
-                    <li>
-                        <div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)" class="desktop">
+                    <li><div id="nav-summary" onmouseover="toggleNavSummary(false)" onmouseout="toggleNavSummary(true)" class="desktop">
                             <a href="../guide/index.html" class="button">Table of contents</a>
                             <div id="nav-summary-childs" style="display:none;">
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#introduction"><strong>1</strong><span>Introduction</span></a></div>
                                 
                                 <div class="toc-item" style="margin-left:0"><a href="#setup"><strong>2</strong><span>Configuring Hibernate Validator</span></a></div>
+                                
+                                <div class="toc-item" style="margin-left:0"><a href="#repository"><strong>3</strong><span>Repository</span></a></div>
                                 
                             </div>
                         </div>
@@ -66,7 +68,6 @@
                 <li class="mobile">
                     <a title="Go to Configuration Reference documentation" href="../guide/configurationreference.html" class="button">Conf</a>
                 </li>
-
             </ul>
 
         </div>
@@ -81,6 +82,8 @@
         
         <div class="toc-item" style="margin-left:0px" id="toc-item-setup"><a href="#setup"><strong>2</strong><span>Configuring Hibernate Validator</span></a></div>
         
+        <div class="toc-item" style="margin-left:0px" id="toc-item-repository"><a href="#repository"><strong>3</strong><span>Repository</span></a></div>
+        
         </div>
     </div>
     
@@ -89,11 +92,10 @@
         <h1>Micronaut Hibernate Validator Configuration</h1>
         <p></p>
         <p>Provides integration between Micronaut and Hibernate Validator</p>
-        <p><strong>Version:</strong> 1.2.1.BUILD-SNAPSHOT</p>
+        <p><strong>Version:</strong> <select style='max-width: 200px' onChange='window.document.location.href=this.options[this.selectedIndex].value;'><option selected='selected' value='https://micronaut-projects.github.io/micronaut-hibernate-validator/snapshot/guide/index.html'>1.2.1.BUILD-SNAPSHOT</option><option value='https://micronaut-projects.github.io/micronaut-hibernate-validator/1.2.0/guide/index.html'>1.2.0</option></select></p>
     </div>
     
-
-<h1 id="introduction">1 Introduction</h1>
+<h1 id="introduction"><a class="anchor" href="#introduction"></a>1 Introduction</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-hibernate-validator/edit/master/src/main/docs/guide/introduction.adoc"'>
@@ -112,8 +114,7 @@
 <p>See the section on <a href="https://docs.micronaut.io/1.2.x/guide/index.html#beanValidation">Bean Validation</a> in the documentation for how to declare bean validation rules.</p>
 </div>
 
-
-<h1 id="setup">2 Configuring Hibernate Validator</h1>
+<h1 id="setup"><a class="anchor" href="#setup"></a>2 Configuring Hibernate Validator</h1>
 
 <div class='contribute-btn'>
     <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-hibernate-validator/edit/master/src/main/docs/guide/setup.adoc"'>
@@ -124,8 +125,9 @@
 
 <div class="paragraph">
 <p>        <div class="listingblock multi-language-sample">
+<div class="title"></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-groovy hljs" data-lang="gradle">compile <span class="hljs-string">'io.micronaut.configuration:micronaut-hibernate-validator:1.2.1.BUILD-SNAPSHOT'</span></code></pre>
+<pre class="highlightjs highlight"><code class="language-kotlin hljs" data-lang="gradle">implementation(<span class="hljs-string">"io.micronaut.configuration:micronaut-hibernate-validator:1.2.1.BUILD-SNAPSHOT")</span></code></pre>
 </div>
 </div>
 <div class="listingblock multi-language-sample">
@@ -138,6 +140,22 @@
 </div>
 </div>
 </p>
+</div>
+
+<h1 id="repository"><a class="anchor" href="#repository"></a>3 Repository</h1>
+
+<div class='contribute-btn'>
+    <button type='button' class='btn btn-default' onclick='window.location.href="https://github.com/micronaut-projects/micronaut-hibernate-validator/edit/master/src/main/docs/guide/repository.adoc"'>
+        <i class='fa fa-pencil-square-o'></i> Improve this doc
+    </button>
+</div>
+
+
+<div class="paragraph">
+<p>You can find the source code of this project in this repository:</p>
+</div>
+<div class="paragraph">
+<p><a href="https://github.com/micronaut-projects/micronaut-hibernate-validator">https://github.com/micronaut-projects/micronaut-hibernate-validator</a></p>
 </div>
 
     </div>
