@@ -16,7 +16,7 @@ dependencies {
     compileOnly 'io.micronaut:micronaut-router'
     implementation 'io.micronaut:micronaut-inject'
     implementation 'io.micronaut:micronaut-validation'
-    implementation 'org.hibernate:hibernate-validator:6.1.4.Final'
+    implementation 'org.hibernate:hibernate-validator:6.1.5.Final'
     compileOnly 'org.glassfish.web:el-impl:2.2.1-b05'
 
     runtime 'org.glassfish:javax.el:3.0.1-b11'
