@@ -1,1 +1,1 @@
-dependency:io.micronaut.configuration:micronaut-hibernate-validator[version="{version}"]
+dependency:io.micronaut.beanvalidation:micronaut-hibernate-validator[version="{version}"]
