@@ -33,9 +33,9 @@ import io.micronaut.validation.validator.ValidatorConfiguration;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Singleton;
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidatorFactory;
-import javax.validation.metadata.BeanDescriptor;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.metadata.BeanDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -53,7 +53,7 @@ import java.util.Set;
 public class MicronautHibernateValidator extends DefaultValidator implements Validator, ExecutableMethodValidator, ReactiveValidator, AnnotatedElementValidator, BeanDefinitionValidator {
 
     private final ValidatorFactory validatorFactory;
-    private final javax.validation.Validator validator;
+    private final jakarta.validation.Validator validator;
 
     /**
      * Default constructor.
