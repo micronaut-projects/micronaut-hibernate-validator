@@ -15,6 +15,8 @@
  */
 package io.micronaut.configuration.hibernate.validator;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
 import io.micronaut.context.BeanResolutionContext;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
@@ -30,8 +32,6 @@ import io.micronaut.validation.validator.ReactiveValidator;
 import io.micronaut.validation.validator.Validator;
 import io.micronaut.validation.validator.ValidatorConfiguration;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.inject.Singleton;
 import javax.validation.ConstraintViolation;
 import javax.validation.ValidatorFactory;
@@ -61,21 +61,21 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
      * @param validatorFactory The validator factory
      * @param configuration The validator configuration
      */
-    protected MicronautHibernateValidator(ValidatorFactory validatorFactory, @Nonnull ValidatorConfiguration configuration) {
+    protected MicronautHibernateValidator(ValidatorFactory validatorFactory, @NonNull ValidatorConfiguration configuration) {
         super(configuration);
         this.validatorFactory = validatorFactory;
         this.validator = validatorFactory.getValidator();
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validate(@Nonnull T object, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validate(@NonNull T object, @Nullable Class<?>... groups) {
         return validator.validate(object, groups);
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validateProperty(@Nonnull T object, @Nonnull String propertyName, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validateProperty(@NonNull T object, @NonNull String propertyName, @Nullable Class<?>... groups) {
         return validator.validateProperty(
                 object,
                 propertyName,
@@ -83,9 +83,9 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
         );
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validateValue(@Nonnull Class<T> beanType, @Nonnull String propertyName, @Nullable Object value, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validateValue(@NonNull Class<T> beanType, @NonNull String propertyName, @Nullable Object value, @Nullable Class<?>... groups) {
         return validator
                     .validateValue(
                             beanType,
@@ -105,9 +105,9 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
         return validator.unwrap(type);
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validateReturnValue(@Nonnull T object, @Nonnull Method method, @Nullable Object returnValue, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validateReturnValue(@NonNull T object, @NonNull Method method, @Nullable Object returnValue, @Nullable Class<?>... groups) {
         return validator.forExecutables().validateReturnValue(
                 object,
                 method,
@@ -116,9 +116,9 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
         );
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validateConstructorParameters(@Nonnull Constructor<? extends T> constructor, @Nonnull Object[] parameterValues, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validateConstructorParameters(@NonNull Constructor<? extends T> constructor, @NonNull Object[] parameterValues, @Nullable Class<?>... groups) {
         return validator.forExecutables().validateConstructorParameters(
                 constructor,
                 parameterValues,
@@ -126,9 +126,9 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
         );
     }
 
-    @Nonnull
+    @NonNull
     @Override
-    public <T> Set<ConstraintViolation<T>> validateConstructorReturnValue(@Nonnull Constructor<? extends T> constructor, @Nonnull T createdObject, @Nullable Class<?>... groups) {
+    public <T> Set<ConstraintViolation<T>> validateConstructorReturnValue(@NonNull Constructor<? extends T> constructor, @NonNull T createdObject, @Nullable Class<?>... groups) {
         return validator.forExecutables().validateConstructorReturnValue(
                 constructor,
                 createdObject,
@@ -137,13 +137,13 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
     }
 
     @Override
-    public <T> void validateBean(@Nonnull BeanResolutionContext resolutionContext, @Nonnull BeanDefinition<T> definition, @Nonnull T bean) throws BeanInstantiationException {
+    public <T> void validateBean(@NonNull BeanResolutionContext resolutionContext, @NonNull BeanDefinition<T> definition, @NonNull T bean) throws BeanInstantiationException {
         Set<ConstraintViolation<T>> violations = validator.validate(bean);
         final Class<?> beanType = bean.getClass();
         failOnError(resolutionContext, violations, beanType);
     }
 
-    private <T> void failOnError(@Nonnull BeanResolutionContext resolutionContext, Set<ConstraintViolation<T>> errors, Class<?> beanType) {
+    private <T> void failOnError(@NonNull BeanResolutionContext resolutionContext, Set<ConstraintViolation<T>> errors, Class<?> beanType) {
         if (!errors.isEmpty()) {
             StringBuilder builder = new StringBuilder();
             builder.append("Validation failed for bean definition [");
