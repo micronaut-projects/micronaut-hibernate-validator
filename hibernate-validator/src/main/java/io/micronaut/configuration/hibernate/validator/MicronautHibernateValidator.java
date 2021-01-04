@@ -24,7 +24,11 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.annotation.AnnotatedElementValidator;
 import io.micronaut.inject.validation.BeanDefinitionValidator;
-import io.micronaut.validation.validator.*;
+import io.micronaut.validation.validator.DefaultValidator;
+import io.micronaut.validation.validator.ExecutableMethodValidator;
+import io.micronaut.validation.validator.ReactiveValidator;
+import io.micronaut.validation.validator.Validator;
+import io.micronaut.validation.validator.ValidatorConfiguration;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
