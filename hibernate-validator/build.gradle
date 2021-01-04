@@ -3,9 +3,7 @@ dependencies {
     annotationProcessor 'io.micronaut:micronaut-graal'
     compileOnly 'io.micronaut:micronaut-router'
     implementation 'io.micronaut:micronaut-inject'
-    implementation('io.micronaut:micronaut-validation') {
-        exclude(group: 'javax.validation', module: 'validation-api')
-    }
+    implementation 'io.micronaut:micronaut-validation'
     implementation 'org.hibernate:hibernate-validator:7.0.0.Final'
     compileOnly 'org.glassfish.web:el-impl:2.2.1-b05'
 
