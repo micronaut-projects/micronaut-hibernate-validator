@@ -59,26 +59,27 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
     @Override
     public List<String> getParameterNames(Constructor<?> constructor) {
         Class<?> declaringClass = constructor.getDeclaringClass();
-        Class<?>[] parameterTypes = constructor.getParameterTypes();
         if (INTERNAL_CLASS_NAMES.contains(declaringClass.getName())) {
             return doGetParameterNames(constructor);
         }
         Optional<? extends BeanDefinition<?>> definition = beanContext.findBeanDefinition(declaringClass);
         return definition.map(def ->
             Arrays.stream(def.getConstructor().getArguments()).map(Argument::getName).collect(Collectors.toList())
-        ).orElse(defaultParameterTypes(parameterTypes));
+        ).orElseGet(() -> defaultParameterTypes(constructor.getParameterTypes()));
     }
 
     @Override
     public List<String> getParameterNames(Method method) {
-        Class<?>[] parameterTypes = method.getParameterTypes();
         Class<?> declaringClass = method.getDeclaringClass();
         if (INTERNAL_CLASS_NAMES.contains(declaringClass.getName())) {
             return doGetParameterNames(method);
         }
 
+        Class<?>[] parameterTypes = method.getParameterTypes();
         Optional<? extends ExecutableMethod<?, Object>> executableMethod = beanContext.findExecutableMethod(declaringClass, method.getName(), parameterTypes);
-        return executableMethod.map(m -> Arrays.asList(m.getArgumentNames())).orElse(defaultParameterTypes(parameterTypes));
+        return executableMethod.map(m ->
+            Arrays.stream(m.getArguments()).map(Argument::getName).collect(Collectors.toList())
+        ).orElseGet(() -> defaultParameterTypes(parameterTypes));
     }
 
     /**
@@ -88,7 +89,7 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
      * @return list of strings
      */
     protected List<String> defaultParameterTypes(Class<?>[] parameterTypes) {
-        List<String> names = new ArrayList<>();
+        List<String> names = new ArrayList<>(parameterTypes.length);
         for (int i = 0; i < parameterTypes.length; i++) {
             names.add("arg" + i);
         }
