@@ -19,8 +19,8 @@ import io.micronaut.context.BeanContext;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.core.reflect.InstantiationUtils;
 import io.micronaut.inject.DisposableBeanDefinition;
+import jakarta.inject.Singleton;
 
-import javax.inject.Singleton;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorFactory;
 

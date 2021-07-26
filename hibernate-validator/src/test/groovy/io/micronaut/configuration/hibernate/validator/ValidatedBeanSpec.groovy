@@ -19,11 +19,11 @@ import io.micronaut.context.ApplicationContext
 import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.annotation.Value
 import io.micronaut.context.exceptions.BeanInstantiationException
+import jakarta.inject.Singleton
 import org.hibernate.validator.constraints.URL
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
 
 /**
  * Created by graemerocher on 15/06/2017.
