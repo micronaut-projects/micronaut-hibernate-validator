@@ -21,7 +21,7 @@ import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.ExecutableMethod;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import javax.validation.ParameterNameProvider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;

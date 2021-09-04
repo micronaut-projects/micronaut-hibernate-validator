@@ -17,7 +17,7 @@ package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.context.BeanContext;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
