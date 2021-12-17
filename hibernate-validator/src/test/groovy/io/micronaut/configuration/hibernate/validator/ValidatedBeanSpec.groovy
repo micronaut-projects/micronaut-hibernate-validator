@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.URL
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 /**
  * Created by graemerocher on 15/06/2017.
@@ -43,14 +43,14 @@ class ValidatedBeanSpec extends Specification {
 
         then:
         def e = thrown(BeanInstantiationException)
-        e.message.normalize() == '''\
+        e.message.normalize().startsWith('''\
 Error instantiating bean of type  [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 
 Message: Validation failed for bean definition [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 List of constraint violations:[
 \turl - must be a valid URL
 ]
-'''
+''')
     }
 
     void "test validated bean invalid bean custom validator"() {
@@ -67,14 +67,14 @@ List of constraint violations:[
 
         then:
         def e = thrown(BeanInstantiationException)
-        e.message.normalize() == '''\
+        e.message.normalize().startsWith('''\
 Error instantiating bean of type  [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 
 Message: Validation failed for bean definition [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 List of constraint violations:[
 \tnumber - Must be a big number
 ]
-'''
+''')
     }
 
     @RestoreSystemProperties
@@ -92,14 +92,14 @@ List of constraint violations:[
 
         then:
         def e = thrown(BeanInstantiationException)
-        e.message.normalize() == '''\
+        e.message.normalize().startsWith('''\
 Error instantiating bean of type  [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 
 Message: Validation failed for bean definition [io.micronaut.configuration.hibernate.validator.ValidatedBeanSpec$A]
 List of constraint violations:[
 \tnoBean - The class isn't a bean
 ]
-'''
+''')
     }
 
     @Singleton

@@ -22,8 +22,8 @@ import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.TypeHint;
 import org.hibernate.validator.HibernateValidator;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import javax.validation.Configuration;
 import javax.validation.ConstraintValidatorFactory;
 import javax.validation.MessageInterpolator;
