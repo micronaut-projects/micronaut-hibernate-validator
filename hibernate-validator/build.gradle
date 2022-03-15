@@ -5,12 +5,12 @@ plugins {
 dependencies {
     annotationProcessor mn.micronaut.graal
     annotationProcessor mn.micronaut.inject.java
-    compileOnly 'org.glassfish.web:el-impl:2.2.1-b05'
+    compileOnly libs.glassfish.el
     compileOnly mn.micronaut.router
-    implementation 'org.hibernate:hibernate-validator:6.1.7.Final'
+    implementation libs.hibernate.validator
     implementation mn.micronaut.inject
     implementation mn.micronaut.validation
-    runtimeOnly 'org.glassfish:javax.el:3.0.1-b12'
+    runtimeOnly libs.glassfish.javax.el
     testAnnotationProcessor mn.micronaut.inject.java
     testCompileOnly mn.micronaut.inject.groovy
 }
