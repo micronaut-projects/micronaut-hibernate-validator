@@ -1,9 +1,0 @@
-[versions]
-glassfish-el = '2.2.1-b05'
-glassfish-javax-el = '3.0.1-b12'
-hibernate-validator = '6.1.7.Final'
-
-[libraries]
-glassfish-el = { module = 'org.glassfish.web:el-impl', version.ref = 'glassfish-el' }
-glassfish-javax-el = { module = 'org.glassfish:javax.el', version.ref = 'glassfish-javax-el' }
-hibernate-validator = { module = 'org.hibernate:hibernate-validator', version.ref = 'hibernate-validator' }
