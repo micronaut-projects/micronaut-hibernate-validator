@@ -52,7 +52,6 @@ import java.util.Set;
 @Replaces(DefaultValidator.class)
 public class MicronautHibernateValidator extends DefaultValidator implements Validator, ExecutableMethodValidator, ReactiveValidator, AnnotatedElementValidator, BeanDefinitionValidator {
 
-    private final ValidatorFactory validatorFactory;
     private final javax.validation.Validator validator;
 
     /**
@@ -63,7 +62,6 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
      */
     protected MicronautHibernateValidator(ValidatorFactory validatorFactory, @NonNull ValidatorConfiguration configuration) {
         super(configuration);
-        this.validatorFactory = validatorFactory;
         this.validator = validatorFactory.getValidator();
     }
 

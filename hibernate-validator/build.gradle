@@ -21,4 +21,8 @@ micronautBuild {
     resolutionStrategy {
         force (libs.hibernate.validator)
     }
+    binaryCompatibility {
+        // Last version 3.0.0 is way to old
+        enabled.set(false)
+    }
 }
