@@ -1,0 +1,8 @@
+micronaut:
+  executors:
+    io:
+      type: fixed
+      number-of-threads: 20
+    scheduled:
+      type: fixed
+      number-of-threads: 20

@@ -11,12 +11,14 @@ dependencies {
     implementation mn.micronaut.inject
     implementation mn.micronaut.validation
     runtimeOnly libs.glassfish.javax.el
+
     testAnnotationProcessor mn.micronaut.inject.java
     testCompileOnly mn.micronaut.inject.groovy
+    testImplementation mn.micronaut.http.server.netty
 }
 
 micronautBuild {
     resolutionStrategy {
-        force 'org.hibernate:hibernate-validator:6.1.7.Final'
+        force (libs.hibernate.validator)
     }
 }
