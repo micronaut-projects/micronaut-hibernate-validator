@@ -19,9 +19,11 @@ import io.micronaut.context.BeanContext;
 import io.micronaut.core.type.Argument;
 import io.micronaut.core.util.CollectionUtils;
 import io.micronaut.inject.BeanDefinition;
+import io.micronaut.inject.DelegatingBeanDefinition;
 import io.micronaut.inject.ExecutableMethod;
 
 import jakarta.inject.Singleton;
+
 import javax.validation.ParameterNameProvider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
@@ -62,10 +64,18 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
         if (INTERNAL_CLASS_NAMES.contains(declaringClass.getName())) {
             return doGetParameterNames(constructor);
         }
-        Optional<? extends BeanDefinition<?>> definition = beanContext.findBeanDefinition(declaringClass);
-        return definition.map(def ->
-            Arrays.stream(def.getConstructor().getArguments()).map(Argument::getName).collect(Collectors.toList())
-        ).orElseGet(() -> defaultParameterTypes(constructor.getParameterTypes()));
+        return beanContext.getBeanDefinitions(declaringClass)
+                .stream()
+                .map(bd -> {
+                    if (bd instanceof DelegatingBeanDefinition) {
+                        return ((DelegatingBeanDefinition<?>) bd).getTarget();
+                    }
+                    return bd;
+                })
+                .distinct()
+                .findFirst()
+                .map(def -> Arrays.stream(def.getConstructor().getArguments()).map(Argument::getName).collect(Collectors.toList()))
+                .orElseGet(() -> defaultParameterTypes(constructor.getParameterTypes()));
     }
 
     @Override
@@ -78,7 +88,7 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
         Class<?>[] parameterTypes = method.getParameterTypes();
         Optional<? extends ExecutableMethod<?, Object>> executableMethod = beanContext.findExecutableMethod(declaringClass, method.getName(), parameterTypes);
         return executableMethod.map(m ->
-            Arrays.stream(m.getArguments()).map(Argument::getName).collect(Collectors.toList())
+                Arrays.stream(m.getArguments()).map(Argument::getName).collect(Collectors.toList())
         ).orElseGet(() -> defaultParameterTypes(parameterTypes));
     }
 
