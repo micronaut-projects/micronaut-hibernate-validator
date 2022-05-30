@@ -1,7 +1,7 @@
 # Micronaut Hibernate Validator
 
-[![Maven Central](https://img.shields.io/maven-central/v/io.micronaut.configuration/micronaut-hibernate-validator.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.micronaut.configuration%22%20AND%20a:%22micronaut-hibernate-validator%22)
-[![Build Status](https://travis-ci.org/micronaut-projects/micronaut-hibernate-validator.svg?branch=master)](https://travis-ci.org/micronaut-projects/micronaut-hibernate-validator)
+[![Maven Central](https://img.shields.io/maven-central/v/io.micronaut.configuration/micronaut-hibernate-validator.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.micronaut.beanvalidation%22%20AND%20a:%22micronaut-hibernate-validator%22)
+[![Build Status](https://github.com/micronaut-projects/micronaut-hibernate-validator/workflows/Java%20CI/badge.svg)](https://github.com/micronaut-projects/micronaut-hibernate-validator/actions)
 [![Revved up by Gradle Enterprise](https://img.shields.io/badge/Revved%20up%20by-Gradle%20Enterprise-06A0CE?logo=Gradle&labelColor=02303A)](https://ge.micronaut.io/scans)
 
 This project includes integration with Hibernate Validator for [Micronaut](http://micronaut.io).
