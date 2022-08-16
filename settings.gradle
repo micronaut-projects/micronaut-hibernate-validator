@@ -16,6 +16,13 @@ rootProject.name = 'hibernate-validator-parent'
 
 include 'hibernate-validator'
 
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    }
+}
+
 micronautBuild {
     importMicronautCatalog()
 }
