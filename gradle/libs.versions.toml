@@ -5,7 +5,7 @@ groovy = "3.0.12"
 
 glassfish-el = '2.2.1-b05'
 glassfish-javax-el = '3.0.1-b12'
-hibernate-validator = '6.2.4.Final'
+hibernate-validator = '8.0.0.Final'
 
 [libraries]
 glassfish-el = { module = 'org.glassfish.web:el-impl', version.ref = 'glassfish-el' }
