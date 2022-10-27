@@ -1,7 +1,7 @@
 [versions]
 micronaut = "3.6.3"
 micronaut-docs = "2.0.0"
-groovy = "3.0.12"
+groovy = "3.0.13"
 glassfish-el = '2.2.1-b05'
 glassfish-javax-el = '3.0.1-b12'
 glassfish-jakarta-el = '3.0.4'
