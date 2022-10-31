@@ -15,7 +15,7 @@ dependencies {
     implementation libs.hibernate.validator
     implementation mn.micronaut.inject
     implementation mn.micronaut.validation
-    runtimeOnly libs.glassfish.javax.el
+    runtimeOnly libs.glassfish.jakarta.el
 
     testAnnotationProcessor mn.micronaut.inject.java
     testCompileOnly mn.micronaut.inject.groovy
