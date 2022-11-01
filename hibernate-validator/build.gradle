@@ -16,6 +16,7 @@ dependencies {
     testCompileOnly mn.micronaut.inject.groovy
     testImplementation mn.micronaut.http.server.netty
     testRuntimeOnly mn.snakeyaml
+    testImplementation(mn.micronaut.serde.jackson)
 }
 
 micronautBuild {
