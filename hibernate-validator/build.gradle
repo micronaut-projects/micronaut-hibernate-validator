@@ -1,10 +1,5 @@
 plugins {
-    id 'io.micronaut.build.internal.module'
-}
-
-repositories {
-    mavenCentral()
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
+    id 'io.micronaut.build.internal.hibernate-validator-module'
 }
 
 dependencies {
@@ -20,6 +15,7 @@ dependencies {
     testAnnotationProcessor mn.micronaut.inject.java
     testCompileOnly mn.micronaut.inject.groovy
     testImplementation mn.micronaut.http.server.netty
+    testRuntimeOnly mn.snakeyaml
 }
 
 micronautBuild {
