@@ -1,5 +1,5 @@
 plugins {
-    id 'io.micronaut.build.internal.module'
+    id 'io.micronaut.build.internal.hibernate-validator-module'
 }
 
 dependencies {
@@ -15,6 +15,8 @@ dependencies {
     testAnnotationProcessor mn.micronaut.inject.java
     testCompileOnly mn.micronaut.inject.groovy
     testImplementation mn.micronaut.http.server.netty
+    testRuntimeOnly mn.snakeyaml
+    testImplementation(mn.micronaut.serde.jackson)
 }
 
 micronautBuild {
