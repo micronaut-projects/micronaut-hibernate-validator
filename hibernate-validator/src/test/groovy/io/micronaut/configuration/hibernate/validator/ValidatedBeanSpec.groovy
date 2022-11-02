@@ -20,7 +20,6 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.annotation.Value
 import io.micronaut.context.exceptions.BeanInstantiationException
 import org.hibernate.validator.constraints.URL
-import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
 
@@ -30,8 +29,7 @@ import jakarta.inject.Singleton
  * Created by graemerocher on 15/06/2017.
  */
 class ValidatedBeanSpec extends Specification {
-
-    @PendingFeature
+    
     void "test validated bean invalid bean"() {
         given:
         System.setProperty("a.url", "test")
@@ -54,8 +52,7 @@ List of constraint violations:[
 ]
 ''')
     }
-
-    @PendingFeature
+    
     void "test validated bean invalid bean custom validator"() {
 
         given:
@@ -79,8 +76,7 @@ List of constraint violations:[
 ]
 ''')
     }
-
-    @PendingFeature
+    
     @RestoreSystemProperties
     void "test validated bean invalid bean custom validator that isnt a bean"() {
 
