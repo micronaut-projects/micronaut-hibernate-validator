@@ -16,13 +16,3 @@ dependencies {
     testCompileOnly mn.micronaut.inject.groovy
     testImplementation mn.micronaut.http.server.netty
 }
-
-micronautBuild {
-    resolutionStrategy {
-        force (libs.hibernate.validator)
-    }
-    binaryCompatibility {
-        // Last version 3.0.0 is way to old
-        enabled.set(false)
-    }
-}

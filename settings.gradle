@@ -1,7 +1,4 @@
 pluginManagement {
-    plugins {
-        id 'io.micronaut.build.shared.settings' version getProperty("micronautSharedSettingVersion")
-    }
     repositories {
         gradlePluginPortal()
         mavenCentral()
@@ -9,11 +6,12 @@ pluginManagement {
 }
 
 plugins {
-    id 'io.micronaut.build.shared.settings'
+    id 'io.micronaut.build.shared.settings' version '5.3.15'
 }
 
 rootProject.name = 'hibernate-validator-parent'
 
+include 'hibernate-validator-bom'
 include 'hibernate-validator'
 
 micronautBuild {
