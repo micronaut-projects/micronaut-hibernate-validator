@@ -4,23 +4,16 @@ pluginManagement {
         mavenCentral()
     }
 }
-
 plugins {
     id 'io.micronaut.build.shared.settings' version '6.1.0'
 }
-
 rootProject.name = 'hibernate-validator-parent'
 
 include 'hibernate-validator-bom'
 include 'hibernate-validator'
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-        maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots/" }
-    }
-}
-
 micronautBuild {
+    // Required for 4.0.0-SNAPSHOT, can be removed after
+    addSnapshotRepository()
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-serde")
 }
