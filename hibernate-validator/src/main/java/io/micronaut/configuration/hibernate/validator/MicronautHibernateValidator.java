@@ -22,6 +22,7 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.BeanInstantiationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
+import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.annotation.AnnotatedElementValidator;
@@ -59,9 +60,12 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
      *
      * @param validatorFactory The validator factory
      * @param configuration The validator configuration
+     * @param ConversionService The conversion service
      */
-    protected MicronautHibernateValidator(ValidatorFactory validatorFactory, @NonNull ValidatorConfiguration configuration) {
-        super(configuration);
+    protected MicronautHibernateValidator(ValidatorFactory validatorFactory,
+                                          @NonNull ValidatorConfiguration configuration,
+                                          ConversionService ConversionService) {
+        super(configuration, ConversionService);
         this.validator = validatorFactory.getValidator();
     }
 

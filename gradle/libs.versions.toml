@@ -1,6 +1,10 @@
 [versions]
 micronaut = "4.0.0-SNAPSHOT"
 micronaut-docs = "2.0.0"
+
+micronaut-serde = "2.0.0-SNAPSHOT"
+micronaut-test = "4.0.0-SNAPSHOT"
+
 groovy = "4.0.6"
 glassfish-el = '2.2.1-b05'
 glassfish-javax-el = '3.0.1-b12'
@@ -8,6 +12,9 @@ glassfish-jakarta-el = '3.0.4'
 hibernate-validator = '6.2.5.Final'
 
 [libraries]
+# BOMs
+micronaut-serde = { module = "io.micronaut.serde:micronaut-serde-bom", version.ref = "micronaut-serde" }
+
 glassfish-el = { module = 'org.glassfish.web:el-impl', version.ref = 'glassfish-el' }
 glassfish-javax-el = { module = 'org.glassfish:javax.el', version.ref = 'glassfish-javax-el' }
 glassfish-jakarta-el = { module = 'org.glassfish:jakarta.el', version.ref = 'glassfish-jakarta-el'  }

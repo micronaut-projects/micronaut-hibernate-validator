@@ -31,7 +31,6 @@ import jakarta.inject.Singleton
  */
 class ValidatedBeanSpec extends Specification {
 
-    @PendingFeature
     void "test validated bean invalid bean"() {
         given:
         System.setProperty("a.url", "test")
@@ -55,7 +54,6 @@ List of constraint violations:[
 ''')
     }
 
-    @PendingFeature
     void "test validated bean invalid bean custom validator"() {
 
         given:
@@ -80,7 +78,6 @@ List of constraint violations:[
 ''')
     }
 
-    @PendingFeature
     @RestoreSystemProperties
     void "test validated bean invalid bean custom validator that isnt a bean"() {
 
