@@ -1,12 +1,5 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
-    }
-}
-
 plugins {
-    id 'io.micronaut.build.shared.settings' version '6.1.0'
+    id 'io.micronaut.build.shared.settings' version '6.1.1'
 }
 
 rootProject.name = 'hibernate-validator-parent'
@@ -22,4 +15,5 @@ dependencyResolutionManagement {
 
 micronautBuild {
     importMicronautCatalog()
+    importMicronautCatalog("micronaut-serde")
 }
