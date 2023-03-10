@@ -22,7 +22,6 @@ import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.BeanInstantiationException;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.core.convert.ConversionService;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
 import io.micronaut.inject.annotation.AnnotatedElementValidator;
@@ -34,9 +33,9 @@ import io.micronaut.validation.validator.Validator;
 import io.micronaut.validation.validator.ValidatorConfiguration;
 
 import jakarta.inject.Singleton;
-import javax.validation.ConstraintViolation;
-import javax.validation.ValidatorFactory;
-import javax.validation.metadata.BeanDescriptor;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ValidatorFactory;
+import jakarta.validation.metadata.BeanDescriptor;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
@@ -53,19 +52,17 @@ import java.util.Set;
 @Replaces(DefaultValidator.class)
 public class MicronautHibernateValidator extends DefaultValidator implements Validator, ExecutableMethodValidator, ReactiveValidator, AnnotatedElementValidator, BeanDefinitionValidator {
 
-    private final javax.validation.Validator validator;
+    private final jakarta.validation.Validator validator;
 
     /**
      * Default constructor.
      *
      * @param validatorFactory The validator factory
      * @param configuration The validator configuration
-     * @param ConversionService The conversion service
      */
     protected MicronautHibernateValidator(ValidatorFactory validatorFactory,
-                                          @NonNull ValidatorConfiguration configuration,
-                                          ConversionService ConversionService) {
-        super(configuration, ConversionService);
+                                          @NonNull ValidatorConfiguration configuration) {
+        super(configuration);
         this.validator = validatorFactory.getValidator();
     }
 

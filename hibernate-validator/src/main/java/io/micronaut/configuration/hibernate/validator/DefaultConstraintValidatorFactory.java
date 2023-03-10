@@ -21,8 +21,8 @@ import io.micronaut.core.reflect.InstantiationUtils;
 import io.micronaut.inject.DisposableBeanDefinition;
 
 import jakarta.inject.Singleton;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorFactory;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorFactory;
 
 /**
  * Default implementation of the {@link ConstraintValidatorFactory} interface that

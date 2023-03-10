@@ -23,7 +23,7 @@ import io.micronaut.inject.ExecutableMethod;
 
 import jakarta.inject.Singleton;
 
-import javax.validation.ParameterNameProvider;
+import jakarta.validation.ParameterNameProvider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;

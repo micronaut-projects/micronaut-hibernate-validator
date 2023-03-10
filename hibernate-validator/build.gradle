@@ -9,7 +9,7 @@ dependencies {
     compileOnly mn.micronaut.router
     implementation libs.hibernate.validator
     implementation mn.micronaut.inject
-    implementation mn.micronaut.validation
+    implementation mnValidation.micronaut.validation
     runtimeOnly libs.glassfish.jakarta.el
 
     testAnnotationProcessor mn.micronaut.inject.java
