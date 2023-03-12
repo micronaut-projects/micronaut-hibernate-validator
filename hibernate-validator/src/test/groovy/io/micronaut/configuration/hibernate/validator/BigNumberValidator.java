@@ -18,8 +18,8 @@ package io.micronaut.configuration.hibernate.validator;
 import io.micronaut.context.BeanContext;
 
 import jakarta.inject.Inject;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class BigNumberValidator implements ConstraintValidator<BigNumber, Integer> {
 

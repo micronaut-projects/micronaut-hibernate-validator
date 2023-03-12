@@ -17,8 +17,8 @@ package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.core.util.StringUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class NoBeanValidator implements ConstraintValidator<NoBean, String> {
 
