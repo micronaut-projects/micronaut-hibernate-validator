@@ -20,12 +20,10 @@
  * @since 1.0
  */
 @Configuration
-@Requires(classes = {Validator.class, HibernateValidator.class, ELContext.class})
+@Requires(classes = HibernateValidator.class)
 package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.context.annotation.Configuration;
 import io.micronaut.context.annotation.Requires;
 import org.hibernate.validator.HibernateValidator;
 
-import javax.el.ELContext;
-import javax.xml.validation.Validator;

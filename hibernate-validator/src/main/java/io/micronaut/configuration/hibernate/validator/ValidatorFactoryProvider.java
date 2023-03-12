@@ -31,6 +31,8 @@ import jakarta.validation.ParameterNameProvider;
 import jakarta.validation.TraversableResolver;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
+import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+
 import java.util.Map;
 import java.util.Optional;
 import java.util.Properties;
@@ -43,7 +45,7 @@ import java.util.Properties;
  */
 @Factory
 @Requires(classes = HibernateValidator.class)
-@TypeHint(value = {HibernateValidator.class, com.sun.el.ExpressionFactoryImpl.class})
+@TypeHint(value = HibernateValidator.class)
 public class ValidatorFactoryProvider {
 
     @Inject
@@ -72,6 +74,7 @@ public class ValidatorFactoryProvider {
         Configuration validatorConfiguration = Validation.byDefaultProvider()
             .configure();
 
+        validatorConfiguration.messageInterpolator(messageInterpolator.orElseGet(ParameterMessageInterpolator::new));
         messageInterpolator.ifPresent(validatorConfiguration::messageInterpolator);
         traversableResolver.ifPresent(validatorConfiguration::traversableResolver);
         constraintValidatorFactory.ifPresent(validatorConfiguration::constraintValidatorFactory);
