@@ -75,13 +75,13 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code>javax.validation.ConstraintValidatorFactory</code></dd>
+<dd><code>jakarta.validation.ConstraintValidatorFactory</code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="annotations">@Singleton
 </span><span class="modifiers">public class </span><span class="element-name type-name-label">DefaultConstraintValidatorFactory</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements javax.validation.ConstraintValidatorFactory</span></div>
+implements jakarta.validation.ConstraintValidatorFactory</span></div>
 <div class="block">Default implementation of the <code>ConstraintValidatorFactory</code> interface that
  retrieves validators from the bean context.</div>
 <dl class="notes">
@@ -119,12 +119,12 @@ implements javax.validation.ConstraintValidatorFactory</span></div>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T extends javax.validation.ConstraintValidator&lt;?,<wbr>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T extends jakarta.validation.ConstraintValidator&lt;?,<wbr>
 ?&gt;&gt;<br>T</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInstance(java.lang.Class)" class="member-name-link">getInstance</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;key)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#releaseInstance(javax.validation.ConstraintValidator)" class="member-name-link">releaseInstance</a><wbr>(javax.validation.ConstraintValidator&lt;?,<wbr>?&gt;&nbsp;instance)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#releaseInstance(jakarta.validation.ConstraintValidator)" class="member-name-link">releaseInstance</a><wbr>(jakarta.validation.ConstraintValidator&lt;?,<wbr>?&gt;&nbsp;instance)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -165,22 +165,22 @@ implements javax.validation.ConstraintValidatorFactory</span></div>
 <li>
 <section class="detail" id="getInstance(java.lang.Class)">
 <h3>getInstance</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters-long">&lt;T extends javax.validation.ConstraintValidator&lt;?,<wbr>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters-long">&lt;T extends jakarta.validation.ConstraintValidator&lt;?,<wbr>
 ?&gt;&gt;</span>
 <span class="return-type">T</span>&nbsp;<span class="element-name">getInstance</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;key)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>getInstance</code>&nbsp;in interface&nbsp;<code>javax.validation.ConstraintValidatorFactory</code></dd>
+<dd><code>getInstance</code>&nbsp;in interface&nbsp;<code>jakarta.validation.ConstraintValidatorFactory</code></dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="releaseInstance(javax.validation.ConstraintValidator)">
+<section class="detail" id="releaseInstance(jakarta.validation.ConstraintValidator)">
 <h3>releaseInstance</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">releaseInstance</span><wbr><span class="parameters">(javax.validation.ConstraintValidator&lt;?,<wbr>?&gt;&nbsp;instance)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">releaseInstance</span><wbr><span class="parameters">(jakarta.validation.ConstraintValidator&lt;?,<wbr>?&gt;&nbsp;instance)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code>releaseInstance</code>&nbsp;in interface&nbsp;<code>javax.validation.ConstraintValidatorFactory</code></dd>
+<dd><code>releaseInstance</code>&nbsp;in interface&nbsp;<code>jakarta.validation.ConstraintValidatorFactory</code></dd>
 </dl>
 </section>
 </li>
