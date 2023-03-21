@@ -5,6 +5,7 @@ plugins {
 rootProject.name = 'hibernate-validator-parent'
 
 include 'hibernate-validator'
+include 'hibernate-validator-bom'
 
 dependencyResolutionManagement {
     repositories {
