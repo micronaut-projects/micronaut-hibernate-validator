@@ -20,6 +20,7 @@ import io.micronaut.context.DefaultApplicationContext
 import io.micronaut.context.annotation.Value
 import io.micronaut.context.exceptions.BeanInstantiationException
 import org.hibernate.validator.constraints.URL
+import spock.lang.Issue
 import spock.lang.PendingFeature
 import spock.lang.Specification
 import spock.util.environment.RestoreSystemProperties
@@ -31,6 +32,8 @@ import jakarta.inject.Singleton
  */
 class ValidatedBeanSpec extends Specification {
 
+    @Issue("https://github.com/micronaut-projects/micronaut-validation/issues/101")
+    @PendingFeature
     void "test validated bean invalid bean"() {
         given:
         System.setProperty("a.url", "test")
