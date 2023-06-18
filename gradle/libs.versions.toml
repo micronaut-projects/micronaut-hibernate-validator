@@ -4,7 +4,7 @@ micronaut-docs = "2.0.0"
 
 micronaut-serde = "2.0.0-M10"
 micronaut-test = "4.0.0-M6"
-micronaut-validation = "4.0.0-M9"
+micronaut-validation = "4.0.0-M11"
 
 groovy = "4.0.11"
 hibernate-validator = '8.0.0.Final'
