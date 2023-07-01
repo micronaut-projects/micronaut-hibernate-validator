@@ -21,7 +21,8 @@ dependencies {
 
 micronautBuild {
     binaryCompatibility {
-        // Last version 3.0.0 is way to old
-        enabled.set(false)
+        enabled.set(true)
+        // TODO required for now. Remove after Micronaut 4 release
+        baselineVersion = "4.0.0-M7"
     }
 }
