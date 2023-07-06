@@ -1,10 +1,10 @@
 [versions]
-micronaut = "4.0.0-RC4"
+micronaut = "4.0.0-RC5"
 micronaut-docs = "2.0.0"
 
-micronaut-serde = "2.0.0-M12"
-micronaut-test = "4.0.0-M6"
-micronaut-validation = "4.0.0-M11"
+micronaut-serde = "2.0.0-M13"
+micronaut-test = "4.0.0-M9"
+micronaut-validation = "4.0.0-M12"
 
 groovy = "4.0.11"
 hibernate-validator = '8.0.1.Final'
