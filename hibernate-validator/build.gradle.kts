@@ -6,7 +6,7 @@ dependencies {
     annotationProcessor(mn.micronaut.graal)
     annotationProcessor(mn.micronaut.inject.java)
     compileOnly(mn.micronaut.router)
-    implementation(libs.hibernate.validator)
+    api(libs.hibernate.validator)
     implementation(mn.micronaut.inject)
     implementation(mnValidation.micronaut.validation)
 
