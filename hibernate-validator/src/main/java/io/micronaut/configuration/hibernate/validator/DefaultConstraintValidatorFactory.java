@@ -16,6 +16,7 @@
 package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.context.BeanContext;
+import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.exceptions.NoSuchBeanException;
 import io.micronaut.core.reflect.InstantiationUtils;
 import io.micronaut.inject.DisposableBeanDefinition;
@@ -31,6 +32,7 @@ import jakarta.validation.ConstraintValidatorFactory;
  * @author James Kleeh
  * @since 1.1.0
  */
+@Primary
 @Singleton
 public class DefaultConstraintValidatorFactory implements ConstraintValidatorFactory {
 
