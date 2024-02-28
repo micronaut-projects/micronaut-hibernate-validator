@@ -3,7 +3,7 @@ managed-hibernate-validator = '8.0.1.Final'
 
 groovy = "4.0.18"
 
-micronaut = "4.3.7"
+micronaut = "4.3.9"
 micronaut-docs = "2.0.0"
 micronaut-serde = "2.8.1"
 micronaut-test = "4.2.1"
