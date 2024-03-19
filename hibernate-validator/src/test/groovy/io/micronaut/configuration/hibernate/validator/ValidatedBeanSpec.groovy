@@ -60,7 +60,7 @@ List of constraint violations:[
     void "test validated bean invalid bean custom validator"() {
 
         given:
-        System.setProperty("a.url", "http://www.google.com")
+        System.setProperty("a.url", "https://www.google.com")
         System.setProperty("a.number", "3")
         System.setProperty("a.nobean", "abc")
         ApplicationContext applicationContext = new DefaultApplicationContext("test ")
@@ -85,7 +85,7 @@ List of constraint violations:[
     void "test validated bean invalid bean custom validator that isnt a bean"() {
 
         given:
-        System.setProperty("a.url", "http://www.google.com")
+        System.setProperty("a.url", "https://www.google.com")
         System.setProperty("a.number", "10")
         System.setProperty("a.nobean", "")
         ApplicationContext applicationContext = new DefaultApplicationContext("test ")

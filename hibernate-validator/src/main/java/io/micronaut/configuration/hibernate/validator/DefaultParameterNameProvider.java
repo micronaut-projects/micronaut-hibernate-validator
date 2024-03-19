@@ -15,15 +15,6 @@
  */
 package io.micronaut.configuration.hibernate.validator;
 
-import io.micronaut.context.BeanContext;
-import io.micronaut.core.type.Argument;
-import io.micronaut.core.util.CollectionUtils;
-import io.micronaut.inject.DelegatingBeanDefinition;
-import io.micronaut.inject.ExecutableMethod;
-
-import jakarta.inject.Singleton;
-
-import jakarta.validation.ParameterNameProvider;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Executable;
 import java.lang.reflect.Method;
@@ -36,6 +27,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.micronaut.context.BeanContext;
+import io.micronaut.core.type.Argument;
+import io.micronaut.inject.DelegatingBeanDefinition;
+import io.micronaut.inject.ExecutableMethod;
+
+import jakarta.inject.Singleton;
+import jakarta.validation.ParameterNameProvider;
+
 /**
  * Default implementation of the {@link ParameterNameProvider} interface that.
  *
@@ -45,7 +44,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class DefaultParameterNameProvider implements ParameterNameProvider {
 
-    private static final Set<String> INTERNAL_CLASS_NAMES = CollectionUtils.setOf(Object.class.getName(), "groovy.lang.GroovyObject");
+    private static final Set<String> INTERNAL_CLASS_NAMES = Set.of(Object.class.getName(), "groovy.lang.GroovyObject");
     private final BeanContext beanContext;
 
     /**
@@ -66,8 +65,8 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
         return beanContext.getBeanDefinitions(declaringClass)
                 .stream()
                 .map(bd -> {
-                    if (bd instanceof DelegatingBeanDefinition) {
-                        return ((DelegatingBeanDefinition<?>) bd).getTarget();
+                    if (bd instanceof DelegatingBeanDefinition<?> dbd) {
+                        return dbd.getTarget();
                     }
                     return bd;
                 })
@@ -98,7 +97,7 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
      * @return list of strings
      */
     protected List<String> defaultParameterTypes(Class<?>[] parameterTypes) {
-        List<String> names = new ArrayList<>(parameterTypes.length);
+        var names = new ArrayList<String>(parameterTypes.length);
         for (int i = 0; i < parameterTypes.length; i++) {
             names.add("arg" + i);
         }
@@ -107,7 +106,7 @@ public class DefaultParameterNameProvider implements ParameterNameProvider {
 
     private List<String> doGetParameterNames(Executable executable) {
         Parameter[] parameters = executable.getParameters();
-        List<String> parameterNames = new ArrayList<>(parameters.length);
+        var parameterNames = new ArrayList<String>(parameters.length);
 
         for (Parameter parameter : parameters) {
             parameterNames.add(parameter.getName());

@@ -15,6 +15,10 @@
  */
 package io.micronaut.configuration.hibernate.validator;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Set;
+
 import io.micronaut.context.BeanResolutionContext;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
@@ -24,21 +28,14 @@ import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
-import io.micronaut.inject.annotation.AnnotatedElementValidator;
-import io.micronaut.inject.validation.BeanDefinitionValidator;
 import io.micronaut.validation.validator.DefaultValidator;
-import io.micronaut.validation.validator.ExecutableMethodValidator;
-import io.micronaut.validation.validator.ReactiveValidator;
-import io.micronaut.validation.validator.Validator;
 import io.micronaut.validation.validator.ValidatorConfiguration;
 
 import jakarta.inject.Singleton;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.validation.metadata.BeanDescriptor;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.Set;
 
 /**
  * Replaces Micronaut Validator with Hibernate backed implementation.
@@ -50,9 +47,9 @@ import java.util.Set;
 @Primary
 @Requires(property = ValidatorConfiguration.ENABLED, value = StringUtils.TRUE, defaultValue = StringUtils.TRUE)
 @Replaces(DefaultValidator.class)
-public class MicronautHibernateValidator extends DefaultValidator implements Validator, ExecutableMethodValidator, ReactiveValidator, AnnotatedElementValidator, BeanDefinitionValidator {
+public class MicronautHibernateValidator extends DefaultValidator {
 
-    private final jakarta.validation.Validator validator;
+    private final Validator validator;
 
     /**
      * Default constructor.
@@ -63,7 +60,7 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
     protected MicronautHibernateValidator(ValidatorFactory validatorFactory,
                                           @NonNull ValidatorConfiguration configuration) {
         super(configuration);
-        this.validator = validatorFactory.getValidator();
+        validator = validatorFactory.getValidator();
     }
 
     @NonNull
@@ -143,16 +140,16 @@ public class MicronautHibernateValidator extends DefaultValidator implements Val
     }
 
     private <T> void failOnError(@NonNull BeanResolutionContext resolutionContext, Set<ConstraintViolation<T>> errors, Class<?> beanType) {
-        if (!errors.isEmpty()) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Validation failed for bean definition [");
-            builder.append(beanType.getName());
-            builder.append("]\nList of constraint violations:[\n");
-            for (ConstraintViolation<?> violation : errors) {
-                builder.append("\t").append(violation.getPropertyPath()).append(" - ").append(violation.getMessage()).append("\n");
-            }
-            builder.append("]");
-            throw new BeanInstantiationException(resolutionContext, builder.toString());
+        if (errors.isEmpty()) {
+            return;
         }
+        var builder = new StringBuilder("Validation failed for bean definition [")
+            .append(beanType.getName())
+            .append("]\nList of constraint violations:[\n");
+        for (ConstraintViolation<?> violation : errors) {
+            builder.append('\t').append(violation.getPropertyPath()).append(" - ").append(violation.getMessage()).append('\n');
+        }
+        builder.append(']');
+        throw new BeanInstantiationException(resolutionContext, builder.toString());
     }
 }
