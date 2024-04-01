@@ -45,7 +45,7 @@ import java.util.Properties;
  */
 @Factory
 @Requires(classes = HibernateValidator.class)
-@TypeHint(value = HibernateValidator.class)
+@TypeHint(HibernateValidator.class)
 public class ValidatorFactoryProvider {
 
     @Inject
@@ -71,7 +71,7 @@ public class ValidatorFactoryProvider {
     @Singleton
     @Requires(classes = HibernateValidator.class)
     ValidatorFactory validatorFactory(Optional<Environment> environment) {
-        Configuration validatorConfiguration = Validation.byDefaultProvider()
+        Configuration<?> validatorConfiguration = Validation.byDefaultProvider()
             .configure();
 
         validatorConfiguration.messageInterpolator(messageInterpolator.orElseGet(ParameterMessageInterpolator::new));
