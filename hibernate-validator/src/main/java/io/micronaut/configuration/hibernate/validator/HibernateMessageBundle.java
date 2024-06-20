@@ -6,7 +6,7 @@ import io.micronaut.core.order.Ordered;
 import jakarta.inject.Singleton;
 
 @Singleton
-@Requires(bean = MicronautHibernateValidator.class)
+@Requires(resources = "classpath:org/hibernate/validator/ValidationMessages.properties")
 public class HibernateMessageBundle extends ResourceBundleMessageSource {
     public HibernateMessageBundle() {
         super("org.hibernate.validator.ValidationMessages");
