@@ -1,5 +1,5 @@
 plugins {
-    id 'io.micronaut.build.shared.settings' version '7.1.3'
+    id 'io.micronaut.build.shared.settings' version '7.2.0'
 }
 
 rootProject.name = 'hibernate-validator-parent'
