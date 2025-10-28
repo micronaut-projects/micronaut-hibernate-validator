@@ -1,10 +1,10 @@
 [versions]
-micronaut = "4.10.4"
+micronaut = "4.10.7"
 micronaut-docs = "3.0.0"
 managed-hibernate-validator = '8.0.2.Final'
 
 micronaut-serde = "2.15.5"
-micronaut-test = "4.9.0"
+micronaut-test = "4.10.1"
 micronaut-validation = "4.11.0"
 
 [libraries]
