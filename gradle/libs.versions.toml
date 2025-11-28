@@ -1,7 +1,7 @@
 [versions]
 micronaut = "4.10.8"
 micronaut-docs = "3.0.0"
-managed-hibernate-validator = '8.0.3.Final'
+managed-hibernate-validator = '9.1.0.Final'
 
 micronaut-serde = "2.15.5"
 micronaut-test = "4.10.2"
