@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.micronaut.beanvalidation.info"},{"l":"io.micronaut.configuration.hibernate.validator"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html","k":"18"},{"l":"io.micronaut.beanvalidation.info"},{"l":"io.micronaut.configuration.hibernate.validator"}];updateSearchResults();
