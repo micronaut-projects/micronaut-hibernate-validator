@@ -31,6 +31,7 @@ import jakarta.validation.ParameterNameProvider;
 import jakarta.validation.TraversableResolver;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
+import jakarta.validation.valueextraction.ValueExtractor;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
 
 import java.util.Map;
@@ -60,6 +61,9 @@ public class ValidatorFactoryProvider {
     @Inject
     protected Optional<ParameterNameProvider> parameterNameProvider = Optional.empty();
 
+    @Inject
+    protected ValueExtractor<?>[] valueExtractors = new ValueExtractor[0];
+
     @Value("${hibernate.validator.ignore-xml-configuration:true}")
     protected boolean ignoreXmlConfiguration = true;
 
@@ -79,6 +83,9 @@ public class ValidatorFactoryProvider {
         traversableResolver.ifPresent(validatorConfiguration::traversableResolver);
         constraintValidatorFactory.ifPresent(validatorConfiguration::constraintValidatorFactory);
         parameterNameProvider.ifPresent(validatorConfiguration::parameterNameProvider);
+        for (ValueExtractor<?> valueExtractor : valueExtractors) {
+            validatorConfiguration.addValueExtractor(valueExtractor);
+        }
 
         if (ignoreXmlConfiguration) {
             validatorConfiguration.ignoreXmlConfiguration();
