@@ -1,5 +1,5 @@
 [versions]
-micronaut = "5.0.0-M17"
+micronaut = "5.0.0-M24"
 managed-hibernate-validator = '9.1.0.Final'
 micronaut-serde = "3.0.0-M1"
 micronaut-validation = "5.0.0-M1"
