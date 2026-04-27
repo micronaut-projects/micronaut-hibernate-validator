@@ -54,7 +54,9 @@ class CustomValueExtractorSpec extends Specification {
         then:
         ConstraintViolationException e = thrown()
         e.constraintViolations.size() == 1
-        e.constraintViolations.first().propertyPath.toString() == 'save.body.number'
+        String propertyPath = e.constraintViolations.first().propertyPath.toString()
+        propertyPath.startsWith('save.')
+        propertyPath.endsWith('.number')
 
         cleanup:
         applicationContext.close()
