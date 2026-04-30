@@ -17,6 +17,9 @@ package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
+/**
+ * Configuration properties for Micronaut Hibernate Validator integration.
+ */
 @ConfigurationProperties("hibernate.validator")
 public class HibernateValidatorConfiguration {
 

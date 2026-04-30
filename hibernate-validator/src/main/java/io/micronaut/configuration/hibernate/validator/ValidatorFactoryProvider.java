@@ -81,6 +81,12 @@ public class ValidatorFactoryProvider {
         Configuration<?> validatorConfiguration = Validation.byDefaultProvider()
             .configure();
 
+        applyValidatorComponents(validatorConfiguration);
+        applyValidatorProperties(validatorConfiguration, environment);
+        return validatorConfiguration.buildValidatorFactory();
+    }
+
+    private void applyValidatorComponents(Configuration<?> validatorConfiguration) {
         validatorConfiguration.messageInterpolator(messageInterpolator == null ? new ParameterMessageInterpolator() : messageInterpolator);
         if (traversableResolver != null) {
             validatorConfiguration.traversableResolver(traversableResolver);
@@ -98,20 +104,24 @@ public class ValidatorFactoryProvider {
         if (configuration.isIgnoreXmlConfiguration()) {
             validatorConfiguration.ignoreXmlConfiguration();
         }
-        if (environment != null) {
-            Properties config = environment.getProperty("hibernate.validator", Properties.class).orElse(null);
-            if (config != null) {
-                for (Map.Entry<Object, Object> entry : config.entrySet()) {
-                    Object value = entry.getValue();
-                    if (value != null) {
-                        validatorConfiguration.addProperty(
-                            "hibernate.validator." + entry.getKey(),
-                            value.toString()
-                        );
-                    }
-                }
+    }
+
+    private void applyValidatorProperties(Configuration<?> validatorConfiguration, @Nullable Environment environment) {
+        if (environment == null) {
+            return;
+        }
+        Properties config = environment.getProperty("hibernate.validator", Properties.class).orElse(null);
+        if (config == null) {
+            return;
+        }
+        for (Map.Entry<Object, Object> entry : config.entrySet()) {
+            Object value = entry.getValue();
+            if (value != null) {
+                validatorConfiguration.addProperty(
+                    "hibernate.validator." + entry.getKey(),
+                    value.toString()
+                );
             }
         }
-        return validatorConfiguration.buildValidatorFactory();
     }
 }
