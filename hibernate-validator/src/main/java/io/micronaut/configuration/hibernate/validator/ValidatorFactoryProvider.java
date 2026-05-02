@@ -17,11 +17,8 @@ package io.micronaut.configuration.hibernate.validator;
 
 import io.micronaut.context.annotation.Factory;
 import io.micronaut.context.annotation.Requires;
-import io.micronaut.context.annotation.Value;
 import io.micronaut.context.env.Environment;
 import io.micronaut.core.annotation.TypeHint;
-import org.hibernate.validator.HibernateValidator;
-
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import jakarta.validation.Configuration;
@@ -31,10 +28,12 @@ import jakarta.validation.ParameterNameProvider;
 import jakarta.validation.TraversableResolver;
 import jakarta.validation.Validation;
 import jakarta.validation.ValidatorFactory;
+import jakarta.validation.valueextraction.ValueExtractor;
+import org.hibernate.validator.HibernateValidator;
 import org.hibernate.validator.messageinterpolation.ParameterMessageInterpolator;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 
 /**
@@ -48,55 +47,81 @@ import java.util.Properties;
 @TypeHint(HibernateValidator.class)
 public class ValidatorFactoryProvider {
 
-    @Inject
-    protected Optional<MessageInterpolator> messageInterpolator = Optional.empty();
+    private final @Nullable MessageInterpolator messageInterpolator;
+    private final @Nullable TraversableResolver traversableResolver;
+    private final @Nullable ConstraintValidatorFactory constraintValidatorFactory;
+    private final @Nullable ParameterNameProvider parameterNameProvider;
+    private final ValueExtractor<?>[] valueExtractors;
+    private final HibernateValidatorConfiguration configuration;
 
     @Inject
-    protected Optional<TraversableResolver> traversableResolver = Optional.empty();
-
-    @Inject
-    protected Optional<ConstraintValidatorFactory> constraintValidatorFactory = Optional.empty();
-
-    @Inject
-    protected Optional<ParameterNameProvider> parameterNameProvider = Optional.empty();
-
-    @Value("${hibernate.validator.ignore-xml-configuration:true}")
-    protected boolean ignoreXmlConfiguration = true;
+    public ValidatorFactoryProvider(@Nullable MessageInterpolator messageInterpolator,
+                                    @Nullable TraversableResolver traversableResolver,
+                                    @Nullable ConstraintValidatorFactory constraintValidatorFactory,
+                                    @Nullable ParameterNameProvider parameterNameProvider,
+                                    ValueExtractor<?>[] valueExtractors,
+                                    HibernateValidatorConfiguration configuration) {
+        this.messageInterpolator = messageInterpolator;
+        this.traversableResolver = traversableResolver;
+        this.constraintValidatorFactory = constraintValidatorFactory;
+        this.parameterNameProvider = parameterNameProvider;
+        this.valueExtractors = valueExtractors;
+        this.configuration = configuration;
+    }
 
     /**
-     * Produces a Validator factory class.
-     * @param environment optional param for environment
-     * @return validator factory
+     * Builds the {@link ValidatorFactory} and applies Micronaut-managed validator components.
+     *
+     * @param environment The Micronaut environment, if available
+     * @return The configured {@link ValidatorFactory}
      */
     @Singleton
     @Requires(classes = HibernateValidator.class)
-    ValidatorFactory validatorFactory(Optional<Environment> environment) {
+    ValidatorFactory validatorFactory(@Nullable Environment environment) {
         Configuration<?> validatorConfiguration = Validation.byDefaultProvider()
             .configure();
 
-        validatorConfiguration.messageInterpolator(messageInterpolator.orElseGet(ParameterMessageInterpolator::new));
-        messageInterpolator.ifPresent(validatorConfiguration::messageInterpolator);
-        traversableResolver.ifPresent(validatorConfiguration::traversableResolver);
-        constraintValidatorFactory.ifPresent(validatorConfiguration::constraintValidatorFactory);
-        parameterNameProvider.ifPresent(validatorConfiguration::parameterNameProvider);
+        applyValidatorComponents(validatorConfiguration);
+        applyValidatorProperties(validatorConfiguration, environment);
+        return validatorConfiguration.buildValidatorFactory();
+    }
 
-        if (ignoreXmlConfiguration) {
+    private void applyValidatorComponents(Configuration<?> validatorConfiguration) {
+        validatorConfiguration.messageInterpolator(messageInterpolator == null ? new ParameterMessageInterpolator() : messageInterpolator);
+        if (traversableResolver != null) {
+            validatorConfiguration.traversableResolver(traversableResolver);
+        }
+        if (constraintValidatorFactory != null) {
+            validatorConfiguration.constraintValidatorFactory(constraintValidatorFactory);
+        }
+        if (parameterNameProvider != null) {
+            validatorConfiguration.parameterNameProvider(parameterNameProvider);
+        }
+        for (ValueExtractor<?> valueExtractor : valueExtractors) {
+            validatorConfiguration.addValueExtractor(valueExtractor);
+        }
+
+        if (configuration.isIgnoreXmlConfiguration()) {
             validatorConfiguration.ignoreXmlConfiguration();
         }
-        environment.ifPresent(env -> {
-            Optional<Properties> config = env.getProperty("hibernate.validator", Properties.class);
-            config.ifPresent(properties -> {
-                for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                    Object value = entry.getValue();
-                    if (value != null) {
-                        validatorConfiguration.addProperty(
-                            "hibernate.validator." + entry.getKey(),
-                            value.toString()
-                        );
-                    }
-                }
-            });
-        });
-        return validatorConfiguration.buildValidatorFactory();
+    }
+
+    private void applyValidatorProperties(Configuration<?> validatorConfiguration, @Nullable Environment environment) {
+        if (environment == null) {
+            return;
+        }
+        Properties config = environment.getProperty("hibernate.validator", Properties.class).orElse(null);
+        if (config == null) {
+            return;
+        }
+        for (Map.Entry<Object, Object> entry : config.entrySet()) {
+            Object value = entry.getValue();
+            if (value != null) {
+                validatorConfiguration.addProperty(
+                    "hibernate.validator." + entry.getKey(),
+                    value.toString()
+                );
+            }
+        }
     }
 }
