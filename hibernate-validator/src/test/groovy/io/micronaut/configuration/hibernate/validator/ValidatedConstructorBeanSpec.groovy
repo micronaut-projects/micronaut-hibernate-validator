@@ -26,6 +26,38 @@ class ValidatedConstructorBeanSpec extends Specification {
         context.close()
     }
 
+    void "a Hibernate constraint on a @Value constructor parameter of an intercepted bean is validated"() {
+        given:
+        ApplicationContext context = ApplicationContext.run(['d.url': 'test'])
+
+        when:
+        context.getBean(D)
+
+        then:
+        DependencyInjectionException e = thrown()
+        e.cause instanceof BeanInstantiationException
+        e.cause.message.contains('url - must be a valid URL')
+
+        cleanup:
+        context.close()
+    }
+
+    /**
+     * The constrained method makes the bean intercepted by the validation advice.
+     */
+    @Singleton
+    static class D {
+        String url
+
+        D(@URL @Value('${d.url}') String url) {
+            this.url = url
+        }
+
+        void update(@URL String url) {
+            this.url = url
+        }
+    }
+
     @Singleton
     static class C {
         final String url

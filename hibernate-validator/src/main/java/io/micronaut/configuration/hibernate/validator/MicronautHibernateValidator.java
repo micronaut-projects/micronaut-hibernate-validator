@@ -38,6 +38,7 @@ import io.micronaut.inject.ConstructorInjectionPoint;
 import io.micronaut.inject.FieldInjectionPoint;
 import io.micronaut.inject.InjectionPoint;
 import io.micronaut.inject.MethodInjectionPoint;
+import io.micronaut.inject.ProxyBeanDefinition;
 import io.micronaut.validation.validator.DefaultValidator;
 import io.micronaut.validation.validator.ValidatorConfiguration;
 
@@ -150,7 +151,7 @@ public class MicronautHibernateValidator extends DefaultValidator {
     public <T> void validateBean(@NonNull BeanResolutionContext resolutionContext, @NonNull BeanDefinition<T> definition, @NonNull T bean) throws BeanInstantiationException {
         Set<ConstraintViolation<T>> violations = validator.validate(bean);
         final Class<?> beanType = bean.getClass();
-        failOnError(resolutionContext, violations, beanType);
+        failOnViolations(resolutionContext, violations, beanType);
     }
 
     /**
@@ -179,18 +180,19 @@ public class MicronautHibernateValidator extends DefaultValidator {
         if (!annotationMetadata.hasStereotype(Constraint.class) && !annotationMetadata.hasStereotype(Valid.class)) {
             return;
         }
-        Class<?> beanType = injectionPoint.getDeclaringBean().getBeanType();
-        Set<? extends ConstraintViolation<?>> violations;
-        if (injectionPoint instanceof FieldInjectionPoint<?, ?> fieldInjectionPoint) {
-            violations = validatePropertyValue(beanType, fieldInjectionPoint.getName(), value);
-        } else if (injectionPoint instanceof ConstructorInjectionPoint<?> constructor && !(injectionPoint instanceof MethodInjectionPoint<?, ?>)) {
-            violations = validateConstructorArgument(beanType, constructor, index, value);
-        } else if (injectionPoint instanceof Named method && NameUtils.isSetterName(method.getName())) {
-            violations = validatePropertyValue(beanType, NameUtils.getPropertyNameForSetter(method.getName()), value);
-        } else {
-            return;
-        }
-        failOnError(resolutionContext, violations, beanType);
+        BeanDefinition<?> declaringBean = injectionPoint.getDeclaringBean();
+        // The bean type of an intercepted bean is the generated proxy, which declares neither the
+        // constructor nor the constraints
+        Class<?> beanType = declaringBean instanceof ProxyBeanDefinition<?> proxy ? proxy.getTargetType() : declaringBean.getBeanType();
+        Set<? extends ConstraintViolation<?>> violations = switch (injectionPoint) {
+            case FieldInjectionPoint<?, ?> field -> validatePropertyValue(beanType, field.getName(), value);
+            case ConstructorInjectionPoint<?> constructor when !(injectionPoint instanceof MethodInjectionPoint<?, ?>) ->
+                validateConstructorArgument(beanType, constructor, index, value);
+            case Named method when NameUtils.isSetterName(method.getName()) ->
+                validatePropertyValue(beanType, NameUtils.getPropertyNameForSetter(method.getName()), value);
+            default -> Collections.emptySet();
+        };
+        failOnViolations(resolutionContext, violations, beanType);
     }
 
     private Set<? extends ConstraintViolation<?>> validatePropertyValue(Class<?> beanType, String propertyName, @Nullable Object value) {
@@ -204,26 +206,48 @@ public class MicronautHibernateValidator extends DefaultValidator {
                                                                              ConstructorInjectionPoint<?> constructorInjectionPoint,
                                                                              int index,
                                                                              @Nullable Object value) {
-        Argument<?>[] arguments = constructorInjectionPoint.getArguments();
-        if (index < 0 || index >= arguments.length) {
-            return Collections.emptySet();
-        }
-        Class<?>[] parameterTypes = new Class<?>[arguments.length];
-        for (int i = 0; i < arguments.length; i++) {
-            parameterTypes[i] = arguments[i].getType();
-        }
-        Constructor<?> constructor;
-        try {
-            constructor = beanType.getDeclaredConstructor(parameterTypes);
-        } catch (NoSuchMethodException e) {
+        Constructor<?> constructor = findConstructor(beanType, constructorInjectionPoint.getArguments());
+        if (constructor == null || index < 0 || index >= constructor.getParameterCount()) {
             return Collections.emptySet();
         }
         // Only this argument is known yet, so validate it alone and keep its violations
-        Object[] parameterValues = new Object[arguments.length];
+        Object[] parameterValues = new Object[constructor.getParameterCount()];
         parameterValues[index] = value;
         return validator.forExecutables().validateConstructorParameters(constructor, parameterValues).stream()
             .filter(violation -> isViolationOfParameter(violation, index))
             .collect(Collectors.toSet());
+    }
+
+    /**
+     * Finds the constructor of the bean type the injection point arguments belong to. The
+     * constructor of an intercepted bean takes the arguments of the target constructor followed by
+     * the ones the proxy needs, so the constructor whose parameters are the longest prefix of the
+     * arguments is used.
+     *
+     * @param beanType  The bean type
+     * @param arguments The injection point arguments
+     * @return The constructor or {@code null}
+     */
+    private static @Nullable Constructor<?> findConstructor(Class<?> beanType, Argument<?>[] arguments) {
+        Constructor<?> found = null;
+        for (Constructor<?> candidate : beanType.getDeclaredConstructors()) {
+            int parameterCount = candidate.getParameterCount();
+            if (parameterCount <= arguments.length
+                && (found == null || parameterCount > found.getParameterCount())
+                && isParameterPrefix(candidate.getParameterTypes(), arguments)) {
+                found = candidate;
+            }
+        }
+        return found;
+    }
+
+    private static boolean isParameterPrefix(Class<?>[] parameterTypes, Argument<?>[] arguments) {
+        for (int i = 0; i < parameterTypes.length; i++) {
+            if (parameterTypes[i] != arguments[i].getType()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private static boolean isViolationOfParameter(ConstraintViolation<?> violation, int index) {
@@ -235,7 +259,7 @@ public class MicronautHibernateValidator extends DefaultValidator {
         return false;
     }
 
-    private void failOnError(@NonNull BeanResolutionContext resolutionContext, Set<? extends ConstraintViolation<?>> errors, Class<?> beanType) {
+    private void failOnViolations(@NonNull BeanResolutionContext resolutionContext, Set<? extends ConstraintViolation<?>> errors, Class<?> beanType) {
         if (errors.isEmpty()) {
             return;
         }
