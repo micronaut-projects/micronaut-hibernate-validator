@@ -17,22 +17,36 @@ package io.micronaut.configuration.hibernate.validator;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import io.micronaut.context.BeanResolutionContext;
 import io.micronaut.context.annotation.Primary;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.exceptions.BeanInstantiationException;
+import io.micronaut.core.annotation.AnnotationMetadata;
+import io.micronaut.core.naming.NameUtils;
+import io.micronaut.core.naming.Named;
+import io.micronaut.core.type.Argument;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.inject.BeanDefinition;
+import io.micronaut.inject.ConstructorInjectionPoint;
+import io.micronaut.inject.FieldInjectionPoint;
+import io.micronaut.inject.InjectionPoint;
+import io.micronaut.inject.MethodInjectionPoint;
 import io.micronaut.validation.validator.DefaultValidator;
 import io.micronaut.validation.validator.ValidatorConfiguration;
 
 import jakarta.inject.Singleton;
+import jakarta.validation.Constraint;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ElementKind;
+import jakarta.validation.Path;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.validation.metadata.BeanDescriptor;
@@ -139,7 +153,89 @@ public class MicronautHibernateValidator extends DefaultValidator {
         failOnError(resolutionContext, violations, beanType);
     }
 
-    private <T> void failOnError(@NonNull BeanResolutionContext resolutionContext, Set<ConstraintViolation<T>> errors, Class<?> beanType) {
+    /**
+     * Validates an injected value with Hibernate Validator. The inherited implementation looks the
+     * constraint validators up in Micronaut's own registry, which knows nothing about Hibernate's
+     * constraints such as {@code @URL}. Values injected into a field or through a property setter
+     * are validated against the constraints of that property, constructor arguments against the
+     * constraints of that constructor parameter. Other method arguments are left alone, as whole
+     * bean validation never covered them.
+     *
+     * @param resolutionContext The resolution context
+     * @param injectionPoint    The injection point
+     * @param argument          The argument
+     * @param index             The argument index
+     * @param value             The value
+     * @param <T>               The value type
+     * @throws BeanInstantiationException if the value is invalid
+     */
+    @Override
+    public <T> void validateBeanArgument(@NonNull BeanResolutionContext resolutionContext,
+                                         @NonNull InjectionPoint injectionPoint,
+                                         @NonNull Argument<T> argument,
+                                         int index,
+                                         @Nullable T value) throws BeanInstantiationException {
+        AnnotationMetadata annotationMetadata = argument.getAnnotationMetadata();
+        if (!annotationMetadata.hasStereotype(Constraint.class) && !annotationMetadata.hasStereotype(Valid.class)) {
+            return;
+        }
+        Class<?> beanType = injectionPoint.getDeclaringBean().getBeanType();
+        Set<? extends ConstraintViolation<?>> violations;
+        if (injectionPoint instanceof FieldInjectionPoint<?, ?> fieldInjectionPoint) {
+            violations = validatePropertyValue(beanType, fieldInjectionPoint.getName(), value);
+        } else if (injectionPoint instanceof ConstructorInjectionPoint<?> constructor && !(injectionPoint instanceof MethodInjectionPoint<?, ?>)) {
+            violations = validateConstructorArgument(beanType, constructor, index, value);
+        } else if (injectionPoint instanceof Named method && NameUtils.isSetterName(method.getName())) {
+            violations = validatePropertyValue(beanType, NameUtils.getPropertyNameForSetter(method.getName()), value);
+        } else {
+            return;
+        }
+        failOnError(resolutionContext, violations, beanType);
+    }
+
+    private Set<? extends ConstraintViolation<?>> validatePropertyValue(Class<?> beanType, String propertyName, @Nullable Object value) {
+        if (validator.getConstraintsForClass(beanType).getConstraintsForProperty(propertyName) == null) {
+            return Collections.emptySet();
+        }
+        return validator.validateValue(beanType, propertyName, value);
+    }
+
+    private Set<? extends ConstraintViolation<?>> validateConstructorArgument(Class<?> beanType,
+                                                                             ConstructorInjectionPoint<?> constructorInjectionPoint,
+                                                                             int index,
+                                                                             @Nullable Object value) {
+        Argument<?>[] arguments = constructorInjectionPoint.getArguments();
+        if (index < 0 || index >= arguments.length) {
+            return Collections.emptySet();
+        }
+        Class<?>[] parameterTypes = new Class<?>[arguments.length];
+        for (int i = 0; i < arguments.length; i++) {
+            parameterTypes[i] = arguments[i].getType();
+        }
+        Constructor<?> constructor;
+        try {
+            constructor = beanType.getDeclaredConstructor(parameterTypes);
+        } catch (NoSuchMethodException e) {
+            return Collections.emptySet();
+        }
+        // Only this argument is known yet, so validate it alone and keep its violations
+        Object[] parameterValues = new Object[arguments.length];
+        parameterValues[index] = value;
+        return validator.forExecutables().validateConstructorParameters(constructor, parameterValues).stream()
+            .filter(violation -> isViolationOfParameter(violation, index))
+            .collect(Collectors.toSet());
+    }
+
+    private static boolean isViolationOfParameter(ConstraintViolation<?> violation, int index) {
+        for (Path.Node node : violation.getPropertyPath()) {
+            if (node.getKind() == ElementKind.PARAMETER) {
+                return node.as(Path.ParameterNode.class).getParameterIndex() == index;
+            }
+        }
+        return false;
+    }
+
+    private void failOnError(@NonNull BeanResolutionContext resolutionContext, Set<? extends ConstraintViolation<?>> errors, Class<?> beanType) {
         if (errors.isEmpty()) {
             return;
         }
