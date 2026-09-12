@@ -1,8 +1,8 @@
 [versions]
-micronaut = "5.2.0"
+micronaut = "5.2.1"
 managed-hibernate-validator = '9.1.3.Final'
-micronaut-serde = "3.0.0"
-micronaut-validation = "5.0.0"
+micronaut-serde = "3.1.1"
+micronaut-validation = "5.1.0"
 
 [libraries]
 # Core
